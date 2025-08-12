@@ -14,6 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup(
     {
         { import = "Noxyc.plugins"},
+        { import = "Noxyc.plugins.lsp"},
     },
     {
         checker = {
