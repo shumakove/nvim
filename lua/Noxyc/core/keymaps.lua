@@ -61,3 +61,38 @@ vim.keymap.set("n", "<leader>fp", function()
     print("File path copied to clipboard " .. filePath)
 end, { desc = "Copy file path to clipboard" })
 
+-- Open AI Guide
+vim.keymap.set("n", "<leader>?", function()
+    local guide_path = vim.fn.stdpath("config") .. "/CURSOR_AI_GUIDE.md"
+    vim.cmd("edit " .. guide_path)
+end, { desc = "Open AI Guide for Cursor/Claude" })
+
+-- Quick open AI quickstart
+vim.keymap.set("n", "<leader>??", function()
+    local guide_path = vim.fn.stdpath("config") .. "/QUICKSTART_CURSOR.md"
+    vim.cmd("edit " .. guide_path)
+end, { desc = "Open AI Quickstart" })
+
+-- Open Layout settings
+vim.keymap.set("n", "<leader>?l", function()
+    local guide_path = vim.fn.stdpath("config") .. "/LAYOUT_SETTINGS.md"
+    vim.cmd("edit " .. guide_path)
+end, { desc = "Open AI Layout Settings" })
+
+-- Open Ollama guide
+vim.keymap.set("n", "<leader>?o", function()
+    local guide_path = vim.fn.stdpath("config") .. "/OLLAMA_GUIDE.md"
+    vim.cmd("edit " .. guide_path)
+end, { desc = "Open Ollama Guide (Local AI)" })
+
+-- Open File Explorer guide
+vim.keymap.set("n", "<leader>?e", function()
+    local guide_path = vim.fn.stdpath("config") .. "/FILE_EXPLORER_GUIDE.md"
+    vim.cmd("edit " .. guide_path)
+end, { desc = "Open File Explorer Guide" })
+
+-- Open Switch to Claude guide
+vim.keymap.set("n", "<leader>?c", function()
+    local guide_path = vim.fn.stdpath("config") .. "/SWITCH_TO_CLAUDE.md"
+    vim.cmd("edit " .. guide_path)
+end, { desc = "How to Switch to Claude API" })
