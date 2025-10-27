@@ -83,14 +83,13 @@ return {
         -- Moved back from mason_lspconfig.setup_handlers from mason.lua file
         -- as mason setup_handlers is deprecated & its causing issues with lsp settings
         --
-        -- Setup servers
-        local lspconfig = require("lspconfig")
+        -- Setup servers using new Neovim 0.11+ API
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
         local capabilities = cmp_nvim_lsp.default_capabilities()
 
         -- Config lsp servers here
         -- lua_ls
-        lspconfig.lua_ls.setup({
+        vim.lsp.config('lua_ls', {
             capabilities = capabilities,
             settings = {
                 Lua = {
@@ -109,8 +108,10 @@ return {
                 },
             },
         })
+        vim.lsp.enable('lua_ls')
+
         -- emmet_ls
-        lspconfig.emmet_ls.setup({
+        vim.lsp.config('emmet_ls', {
             capabilities = capabilities,
             filetypes = {
                 "html",
@@ -123,9 +124,10 @@ return {
                 "svelte",
             },
         })
+        vim.lsp.enable('emmet_ls')
 
         -- emmet_language_server
-        lspconfig.emmet_language_server.setup({
+        vim.lsp.config('emmet_language_server', {
             capabilities = capabilities,
             filetypes = {
                 "css",
@@ -151,22 +153,21 @@ return {
                 variables = {},
             },
         })
+        vim.lsp.enable('emmet_language_server')
 
         -- denols
-        lspconfig.denols.setup({
+        vim.lsp.config('denols', {
             capabilities = capabilities,
-            root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+            root_markers = { "deno.json", "deno.jsonc" },
         })
+        vim.lsp.enable('denols')
 
         -- ts_ls (replaces tsserver)
-        lspconfig.ts_ls.setup({
+        vim.lsp.config('ts_ls', {
             capabilities = capabilities,
-            root_dir = function(fname)
-                local util = lspconfig.util
-                return not util.root_pattern("deno.json", "deno.jsonc")(fname)
-                    and util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
-            end,
+            root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
             single_file_support = false,
+            cmd = { 'typescript-language-server', '--stdio' },
             init_options = {
                 preferences = {
                     includeCompletionsWithSnippetText = true,
@@ -174,14 +175,22 @@ return {
                 },
             },
         })
+        vim.lsp.enable('ts_ls')
 
-        lspconfig.pyright.setup({
+        -- pyright
+        vim.lsp.config('pyright', {
             capabilities = capabilities,
         })
+        vim.lsp.enable('pyright')
 
-        lspconfig.clangd.setup({
+        -- clangd
+        vim.lsp.config('clangd', {
+            on_attach = function (client, bufnr)
+                client.server_capabilities.signatureHelpProvider = false
+            end,
             capabilities = capabilities,
         })
+        vim.lsp.enable('clangd')
 
 
 
