@@ -1,2 +1,36 @@
+# Neovim gitignore
+
+# Lazy.nvim
+lazy-lock.json
+
+# API keys and secrets (ВАЖНО!)
 *API_KEY*.md
 *api_key*.sh
+setup_api_key.sh
+INSTALL_API_KEY.md
+*secret*
+*SECRET*
+.env
+.env.local
+*.key
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Node modules (если есть)
+node_modules/
+package-lock.json
+
+# Backup files
+*~
+*.swp
+*.swo
+*.bak

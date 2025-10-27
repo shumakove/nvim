@@ -91,8 +91,8 @@ vim.keymap.set("n", "<leader>?e", function()
     vim.cmd("edit " .. guide_path)
 end, { desc = "Open File Explorer Guide" })
 
--- Open Switch to Claude guide
-vim.keymap.set("n", "<leader>?c", function()
-    local guide_path = vim.fn.stdpath("config") .. "/SWITCH_TO_CLAUDE.md"
+-- Open Git guide
+vim.keymap.set("n", "<leader>?g", function()
+    local guide_path = vim.fn.stdpath("config") .. "/GIT_GUIDE.md"
     vim.cmd("edit " .. guide_path)
-end, { desc = "How to Switch to Claude API" })
+end, { desc = "Open Git Guide" })

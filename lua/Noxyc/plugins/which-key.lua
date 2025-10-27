@@ -71,6 +71,28 @@ return {
             { "<leader>e", desc = "Toggle File Explorer" },
             { "<leader>E", desc = "Reveal Current File in Explorer" },
 
+            { "<leader>g", group = "🔀 Git" },
+            { "<leader>gg", desc = "LazyGit" },
+            { "<leader>gf", desc = "LazyGit Current File" },
+            { "<leader>gd", desc = "DiffView Open" },
+            { "<leader>gh", desc = "File History" },
+            { "<leader>gH", desc = "Branch History" },
+            { "<leader>gc", desc = "DiffView Close" },
+            
+            { "<leader>h", group = "Git Hunks" },
+            { "<leader>hs", desc = "Stage hunk" },
+            { "<leader>hr", desc = "Reset hunk" },
+            { "<leader>hS", desc = "Stage buffer" },
+            { "<leader>hR", desc = "Reset buffer" },
+            { "<leader>hp", desc = "Preview hunk" },
+            { "<leader>hb", desc = "Blame line" },
+            { "<leader>hB", desc = "Toggle line blame" },
+            { "<leader>hd", desc = "Diff this" },
+            { "<leader>hu", desc = "Undo stage hunk" },
+            
+            { "]h", desc = "Next Git hunk" },
+            { "[h", desc = "Previous Git hunk" },
+
             { "g", group = "📍 Go to" },
             { "gR", desc = "LSP References" },
             { "gD", desc = "Declaration" },
@@ -93,7 +115,7 @@ return {
             { "<leader>?l", desc = "Open Layout Settings" },
             { "<leader>?o", desc = "Open Ollama Guide (Local AI)" },
             { "<leader>?e", desc = "Open File Explorer Guide" },
-            { "<leader>?c", desc = "How to Switch to Claude" },
+            { "<leader>?g", desc = "Open Git Guide" },
         })
     end,
 }
