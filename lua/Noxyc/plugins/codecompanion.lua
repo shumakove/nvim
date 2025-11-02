@@ -15,7 +15,7 @@ return {
         -- Настройка модели Ollama через переменные окружения
         -- Можно изменить модель здесь:
         vim.g.codecompanion_adapter_ollama_model = "deepseek-coder-v2:16b"  -- Измените модель здесь
-        
+
         require("codecompanion").setup({
             strategies = {
                 chat = {
@@ -30,17 +30,17 @@ return {
             },
             -- Используем встроенные адаптеры без переопределения
             -- Ollama работает из коробки, не нужно настраивать адаптер
-            
+
             -- Для изменения модели используйте одно из:
             -- 1. vim.g.codecompanion_adapter_ollama_model = "model-name" (выше)
             -- 2. export CODECOMPANION_ADAPTER_OLLAMA_MODEL="model-name" в ~/.zshrc
-            
+
             -- Доступные модели:
             -- - deepseek-coder-v2:16b (текущая, лучшая для кода)
             -- - qwen2.5-coder:7b (быстрая и хорошая)
             -- - codellama:13b (CodeLlama)
             -- - llama3.1:8b (универсальная)
-            
+
             display = {
                 chat = {
                     window = {

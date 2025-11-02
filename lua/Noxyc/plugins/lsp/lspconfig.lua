@@ -48,7 +48,18 @@ return {
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
 
                 opts.desc = "Restart LSP"
-                vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+                vim.keymap.set("n", "<leader>rs", function()
+                    -- Restart all active LSP servers for current buffer
+                    local clients = vim.lsp.get_active_clients({bufnr = ev.buf})
+                    if #clients > 0 then
+                        for _, client in pairs(clients) do
+                            vim.lsp.stop_client(client.id, true)
+                        end
+                        vim.notify("LSP servers restarted", vim.log.levels.INFO)
+                    else
+                        vim.notify("No active LSP servers", vim.log.levels.INFO)
+                    end
+                end, opts) -- mapping to restart lsp if necessary
 
                 vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
             end,
@@ -189,8 +200,49 @@ return {
                 client.server_capabilities.signatureHelpProvider = false
             end,
             capabilities = capabilities,
+            cmd = {
+                '/usr/local/opt/llvm/bin/clangd',
+                '--background-index',
+                '--clang-tidy',
+                '--header-insertion=iwyu',
+                '--completion-style=detailed',
+                '--function-arg-placeholders',
+                '--fallback-style=llvm'
+            },
         })
         vim.lsp.enable('clangd')
+
+        -- Auto-create compile_commands.json for C++ files with proper system includes
+        vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+            pattern = { "*.cpp", "*.cxx", "*.cc", "*.hpp", "*.hxx" },
+            callback = function(ev)
+                local bufdir = vim.fn.expand('%:p:h')
+                local compile_commands_file = bufdir .. '/compile_commands.json'
+                
+                if vim.fn.filereadable(compile_commands_file) == 0 then
+                    -- Detect LLVM version and SDK path
+                    local handle = io.popen('ls -1 /usr/local/Cellar/llvm/ 2>/dev/null | head -1')
+                    local llvm_version = handle and handle:read("*line")
+                    handle:close()
+                    
+                    handle = io.popen('readlink -f /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk 2>/dev/null || echo "MacOSX15.sdk"')
+                    local sdk_path = handle and handle:read("*line"):gsub('\n', '')
+                    handle:close()
+                    
+                    if llvm_version and sdk_path then
+                        -- Create compile_commands.json
+                        local clang_path = '/usr/local/Cellar/llvm/' .. llvm_version .. '/bin/clang++'
+                        local file_name = vim.fn.expand('%:t')
+                        local flags_str = '-std=c++23 -stdlib=libc++ -I/usr/local/Cellar/llvm/' .. llvm_version .. '/include/c++/v1 -I/usr/local/Cellar/llvm/' .. llvm_version .. '/lib/clang/' .. llvm_version .. '/include -I' .. sdk_path .. '/usr/include -isysroot ' .. sdk_path .. ' -c ' .. file_name
+                        local compile_commands = string.format('[{\n  "directory": "%s",\n  "command": "%s %s",\n  "file": "%s"\n}]', bufdir, clang_path, flags_str, file_name)
+                        vim.fn.writefile(vim.split(compile_commands, '\n'), compile_commands_file)
+                        print('Created compile_commands.json with C++23 support')
+                    else
+                        print('Warning: Could not auto-detect LLVM or SDK paths for compile_commands.json')
+                    end
+                end
+            end,
+        })
 
 
 

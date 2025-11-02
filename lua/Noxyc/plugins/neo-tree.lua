@@ -37,7 +37,7 @@ return {
                 },
             },
         },
-        
+
         window = {
             position = "left",
             width = 35, -- Ширина панели
